@@ -16,7 +16,9 @@
   
     const disabledText = 'Press ALT to Enable.';
     const enabledText = 'Type to highlight hints. Press ALT to disable.';
-  
+    
+    var charCount=0;
+
     const hintClick = (event) => {
       const inputChatVal = inputChat.value;
       inputChat.value = event.target.innerHTML;
@@ -98,7 +100,7 @@
       assistantPanel.innerHTML = `
           <span style="font-size: larger">
             <strong>
-              <a target="_blank" style="color:green">Skribbl Assistant</a>
+              <a target="_blank" style="color:green">Skribbl Helper</a>
             </strong>
           </span>
           <br>
@@ -166,5 +168,31 @@
     };
   
     initialize();
+    
+    setInterval(function(){
+        charCount = $('#currentWord').text().length;
+
+        if(document.getElementById("addonCounter") === null) {
+            $('#inputChat').after("<div id='addonCounter'>0/"+charCount+"</div>");
+            $("#addonCounter").css({"background-color": "yellow", "position": "relative","left":"0px","top":"-7px","z-index":"100","padding":"2px","letter-spacing":"2px","width":"333px","border-radius":"2px","padding-left":"13px","font-family": "monospace",
+                                   "font-size": "16px"});
+            $("#inputChat").css({"font-family": "monospace", "font-size": "16px","letter-spacing":"2px"});
+        }
+    refreshCounter();
+    }, 1000);
+
+    $('#inputChat').keyup(function () {
+        refreshCounter();
+    });
+
+    function refreshCounter() {
+        var len = $('#inputChat').val().length;
+        if(len==charCount)
+        { $("#addonCounter").css({"background-color": "#2baa2b",});}
+        else
+        {$("#addonCounter").css({"background-color": "#ff5d64",});}
+
+        $("#addonCounter").text($('#currentWord').text()+"   "+len+"/"+charCount);
+    }
   })();
   
